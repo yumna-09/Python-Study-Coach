@@ -1,86 +1,357 @@
 # Python Study Coach — RAG AI Agent
 
-> An interactive AI study coach built in n8n that helps beginner Python learners understand concepts, practise problems, and learn from their mistakes using retrieval-augmented generation (RAG).
+- **Author:** Yumna Kashif
+- **Program:** FlyRank AI Fluency
+- **Track:** AI Fluency
+- **Project Type:** AI Study Agent
+- **Platform:** n8n
+- **Focus:** Python Foundations · RAG · Agent Evaluation
+
+> **Personal Python notes → retrieval-augmented tutoring → evaluated beginner-friendly learning support**
+
+---
+
+## 🔗 Project Links
+
+* 💻 **[GitHub Repository](https://github.com/yumna-09/Python-Study-Coach)**
+* ⚙️ **[Main Workflow](https://github.com/yumna-09/Python-Study-Coach/blob/main/workflow/python-study-coach.json)**
+* 🧪 **[Evaluation Workflow](https://github.com/yumna-09/Python-Study-Coach/blob/main/workflow/python-study-coach-evaluation.json)**
+
+---
 
 ## Overview
 
-Python Study Coach is an AI-powered learning agent designed for beginner-level Python study.
+Python Study Coach is an interactive AI learning agent designed to help beginner Python learners understand concepts, practise problems, and learn from their mistakes.
 
-Instead of acting as a simple question-answering chatbot, the agent is designed to behave like a tutor: it explains concepts in beginner-friendly language, uses small practical examples, provides hints before complete solutions when appropriate, identifies mistakes in submitted code, and encourages the learner to attempt problems independently.
+Rather than behaving like an answer-only chatbot, the agent follows a **teaching-first approach**. It explains concepts in beginner-friendly language, uses small practical examples, provides hints before complete solutions when appropriate, reviews mistakes, and encourages the learner to attempt problems independently.
 
-The agent also connects to a personal Python study-notes knowledge base stored in Google Drive. The notes are loaded, embedded, stored in an in-memory vector store, and exposed to the agent as a retrieval tool. This allows the agent to ground relevant responses in the learner's own study material while retaining general Python knowledge as a fallback.
+The agent is connected to a personal Python study-notes knowledge base stored in Google Drive. The notes are loaded into a retrieval pipeline using OpenAI embeddings and an in-memory vector store, allowing the agent to retrieve relevant learning material when answering questions.
 
-The project was built as an interactive RAG agent in **n8n** and includes a separate evaluation path for testing generated responses against reference answers.
-
----
-
-## Who It Is For
-
-This project is designed primarily for:
-
-- beginner Python learners building strong programming foundations;
-- students who want explanations rather than answer-only responses;
-- learners practising concepts such as variables, loops, functions, lists, tuples, dictionaries, conditionals, and string operations;
-- students who want an AI tutor connected to their own learning material.
-
-The current implementation is intentionally scoped to **Python Foundations** rather than attempting to serve as a general-purpose programming assistant.
+When the notes do not contain the required information, the agent can fall back to general Python knowledge without falsely claiming that the answer came from the notes.
 
 ---
 
-## What the Agent Does
+## The Problem
 
-The Study Coach can:
+The question guiding this project was:
 
-- explain Python concepts in simple language;
-- provide small, practical code examples;
-- generate practice questions;
-- encourage the learner to attempt a problem before revealing a full solution;
-- review submitted code for syntax, logic, and conceptual mistakes;
-- explain why an error occurred instead of only correcting it;
-- identify both correct and incorrect parts of a learner's attempt;
-- gradually increase difficulty as understanding improves;
-- retrieve relevant information from connected Python study notes;
-- fall back to general Python knowledge when the notes do not contain the required information.
+> **How can an AI study assistant help a beginner learn Python without simply giving away every answer?**
 
-A core guardrail prevents the agent from claiming that information came from the learner's notes when it did not.
+General-purpose AI assistants can explain programming concepts, but they are not necessarily designed around a learner's current material or learning process.
+
+For a study coach, useful behaviour means more than returning technically correct code. The agent should also:
+
+* explain *why* something works;
+* identify mistakes without replacing the learner's thinking;
+* use the learner's own notes when relevant;
+* provide hints before full solutions when appropriate;
+* stay within the intended learning scope.
+
+Python Study Coach was built around these requirements.
 
 ---
 
-## Architecture
+## Who Is This For?
+
+This project is intended for:
+
+* Beginner Python learners
+* Students building programming foundations
+* Learners who want explanations rather than answer-only responses
+* Students who want an AI tutor connected to their own study material
+
+The current version is intentionally scoped to **Python Foundations** rather than acting as a general-purpose programming assistant.
+
+---
+
+# Results at a Glance
+
+| Result | Value |
+| --- | ---: |
+| Evaluation test cases | **10** |
+| Evaluation method | **AI-based Correctness** |
+| Correctness scale | **1–5** |
+| Final V2 correctness | **4.40 / 5.00** |
+| Knowledge source | **Personal Python study notes** |
+| Retrieval approach | **RAG** |
+| Primary agent model | **Google Gemini** |
+
+The final corrected V2 evaluation produced an average **Correctness score of 4.40 / 5.00** across the 10-question Python Foundations benchmark.
+
+The evaluation compares the Study Coach's generated answer against a reference answer for each test case.
+
+---
+
+# Project Workflow
 
 ```text
-                         ┌──────────────────────┐
-                         │   Learner / Chat UI  │
-                         └──────────┬───────────┘
-                                    │
-                                    ▼
-                         ┌──────────────────────┐
-                         │      AI Agent        │
-                         │ Python Study Coach   │
-                         └───────┬──────┬───────┘
-                                 │      │
-                  Language Model │      │ Retrieval Tool
-                                 │      │
-                                 ▼      ▼
-                        ┌────────────┐  ┌─────────────────┐
-                        │   Gemini   │  │  Vector Store   │
-                        │ Chat Model │  │   Retrieval     │
-                        └────────────┘  └────────┬────────┘
-                                               │
-                                               ▼
-                                      ┌──────────────────┐
-                                      │ OpenAI Embeddings│
-                                      └────────┬─────────┘
-                                               │
-                                               ▼
-                                      ┌──────────────────┐
-                                      │ Python Study     │
-                                      │ Notes            │
-                                      │ Google Drive     │
-                                      └──────────────────┘
+Learner
+   │
+   ▼
+n8n Chat Trigger
+   │
+   ▼
+Python Study Coach AI Agent
+   │
+   ├──────────────► Google Gemini Chat Model
+   │
+   │
+   └──────────────► Study Notes Retrieval Tool
+                         │
+                         ▼
+                  Simple Vector Store
+                         ▲
+                         │
+                  OpenAI Embeddings
+                         ▲
+                         │
+                  Python Study Notes
+                         ▲
+                         │
+                     Google Drive
 ```
 
-### Evaluation Path
+---
+
+# Architecture and Design
+
+The project contains two connected processes: the **knowledge pipeline** and the **interactive tutoring pipeline**.
+
+## Knowledge Pipeline
+
+```text
+Google Drive
+     │
+     ▼
+Python Study Notes
+     │
+     ▼
+Default Data Loader
+     │
+     ▼
+OpenAI Embeddings
+     │
+     ▼
+Simple Vector Store
+```
+
+The study notes are downloaded from Google Drive, loaded as a document, converted into embeddings, and inserted into an in-memory vector store.
+
+## Tutoring Pipeline
+
+```text
+Learner Question
+      │
+      ▼
+   AI Agent
+   │      │
+   │      └────► Gemini Chat Model
+   │
+   └───────────► Vector Store Retrieval Tool
+                       │
+                       ▼
+                Relevant Study Notes
+                       │
+                       ▼
+                Tutor Response
+```
+
+The vector store is exposed to the AI Agent as a retrieval tool with instructions to search the learner's Python notes.
+
+This allows the agent to combine conversational reasoning with retrieved study material when relevant.
+
+---
+
+# Agent Behaviour
+
+The Study Coach is instructed to:
+
+1. Explain Python concepts in simple, beginner-friendly language.
+2. Match the learner's current level.
+3. Use small, practical examples.
+4. Allow the learner to attempt practice questions before revealing complete solutions when appropriate.
+5. Prefer hints and explanations over immediate answers.
+6. Identify syntax, logic, and conceptual errors in submitted code.
+7. Explain why an error occurred.
+8. Point out what the learner did correctly as well as what needs improvement.
+9. Gradually increase difficulty as understanding improves.
+10. Stay focused on Python learning.
+
+For knowledge grounding, the agent is instructed to use the connected study notes as the primary source when they are available and relevant.
+
+It must **not pretend that information came from the notes when it did not**.
+
+---
+
+# Tech Stack
+
+| Component | Role |
+| --- | --- |
+| **n8n** | Workflow orchestration and agent interface |
+| **Google Gemini** | Primary language model for the Study Coach |
+| **OpenAI Embeddings** | Embedding generation for retrieval |
+| **Google Drive** | Source for the Python study-notes file |
+| **Simple Vector Store** | In-memory storage and retrieval |
+| **n8n Evaluations** | Dataset-driven agent evaluation |
+| **OpenAI Chat Model** | LLM judge for AI-based correctness |
+
+---
+
+# Setup
+
+The repository contains exported n8n workflows so the project can be reproduced with your own credentials and study material.
+
+## Prerequisites
+
+You will need:
+
+* n8n
+* Google Gemini credentials
+* OpenAI credentials
+* Google Drive access
+* A Python study-notes document
+
+For the evaluation workflow, you will also need access to a supported LLM for AI-based correctness scoring.
+
+---
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/yumna-09/Python-Study-Coach.git
+cd Python-Study-Coach
+```
+
+---
+
+## 2. Import the Main Workflow
+
+Open n8n and import:
+
+```text
+workflow/python-study-coach.json
+```
+
+After importing, reconnect the required credentials because exported workflows do not provide reusable access to the original accounts.
+
+---
+
+## 3. Configure the Gemini Model
+
+Open the **Google Gemini Chat Model** node.
+
+Connect your own Gemini credentials and select a compatible Gemini chat model available in your n8n environment.
+
+The Gemini model provides the primary language-model capability for the Study Coach.
+
+---
+
+## 4. Configure OpenAI Embeddings
+
+Open the **Embeddings OpenAI** node and connect your own OpenAI credentials.
+
+The embeddings node is used by both sides of the retrieval pipeline:
+
+```text
+Study Notes → Vector Store
+
+and
+
+Vector Store → AI Agent Retrieval
+```
+
+---
+
+## 5. Connect Your Study Notes
+
+Open the **Download file** Google Drive node.
+
+Connect your own Google Drive account and select the document containing your Python study notes.
+
+The original implementation uses a Markdown study-notes file.
+
+A reproducing user should select their own document rather than relying on the original development Drive resource.
+
+---
+
+## 6. Verify the Vector Store
+
+The insertion side should:
+
+1. download the study-notes file;
+2. load the document;
+3. generate embeddings;
+4. insert the embedded content into the Simple Vector Store.
+
+The retrieval-side Simple Vector Store should be connected to the AI Agent as a tool.
+
+Both vector-store nodes should use the same memory key so the agent can retrieve the indexed material.
+
+---
+
+## 7. Test the Agent
+
+Open the n8n chat interface and try questions such as:
+
+```text
+What is a variable in Python?
+```
+
+```text
+Explain a for loop with an example.
+```
+
+```text
+What is the difference between a list and a tuple?
+```
+
+You can also ask the coach for a practice problem or provide your own Python code for review.
+
+---
+
+# Usage
+
+The intended learning flow is:
+
+```text
+Ask a Python Question
+        ↓
+Agent Interprets the Request
+        ↓
+Retrieve Relevant Notes When Available
+        ↓
+Generate Beginner-Friendly Explanation
+        ↓
+Example / Hint / Feedback
+        ↓
+Encourage Learner Attempt
+```
+
+For example, when asked about a Python concept, the agent may explain the concept, provide a small example, and finish with a question that checks understanding.
+
+When asked for practice, the agent is designed to avoid immediately revealing the complete solution where doing so would remove the learning opportunity.
+
+---
+
+# V2 Evaluation
+
+A separate evaluation workflow was created to test the final Study Coach against a small Python Foundations benchmark.
+
+The dataset contains **10 test cases** with three fields:
+
+```text
+input
+output
+expected_output
+```
+
+Where:
+
+* `input` contains the benchmark question;
+* `output` contains the generated Study Coach response;
+* `expected_output` contains the reference answer.
+
+## Evaluation Workflow
 
 ```text
 Python Evaluation Dataset
@@ -95,394 +366,225 @@ When Fetching a Dataset Row
          Wait
           │
           ▼
- Evaluation — Set Outputs
+Evaluation — Set Outputs
           │
           ▼
- Evaluation — Set Metrics
+Evaluation — Set Metrics
           │
           ▼
- OpenAI LLM Judge
- (AI-based Correctness)
+AI-Based Correctness Judge
 ```
 
-The production/chat path and evaluation path share the same Study Coach agent so the evaluated behaviour reflects the agent being demonstrated.
-
----
-
-## Tech Stack
-
-| Component | Purpose |
-|---|---|
-| **n8n** | Agent orchestration and workflow automation |
-| **Google Gemini** | Primary chat model used by the Study Coach |
-| **OpenAI Embeddings** | Vector embeddings for study-note retrieval |
-| **Google Drive** | Source for the Python study-notes knowledge base |
-| **n8n Simple Vector Store** | In-memory storage and retrieval of embedded notes |
-| **n8n Evaluation** | Dataset-driven evaluation and metric collection |
-| **OpenAI Chat Model** | LLM judge for AI-based correctness evaluation |
-
----
-
-## How the RAG Pipeline Works
-
-The knowledge pipeline has two responsibilities: **indexing** and **retrieval**.
-
-### 1. Load the study material
-
-A Google Drive node downloads the Markdown file containing the Python study notes.
-
-### 2. Prepare the document
-
-The Default Data Loader converts the downloaded binary file into a document that can be processed by the vector pipeline.
-
-### 3. Create embeddings
-
-OpenAI Embeddings convert the study-note content into numerical vector representations.
-
-### 4. Store the notes
-
-The embedded documents are inserted into n8n's Simple Vector Store using a shared vector-store memory key.
-
-### 5. Retrieve relevant material
-
-A second Simple Vector Store node is configured as an AI Agent tool. When a learner asks a relevant question, the agent can retrieve material from the indexed Python notes.
-
-### 6. Generate the response
-
-The Study Coach combines the learner's request, its tutoring instructions, and retrieved context when available to generate the final response.
-
----
-
-## Agent Behaviour
-
-The agent's system instructions intentionally prioritize **teaching over answer generation**.
-
-The main behavioural rules are:
-
-1. Explain concepts at beginner level.
-2. Avoid unnecessarily jumping to advanced material.
-3. Prefer small and practical examples.
-4. Let the learner attempt practice problems before giving complete solutions when appropriate.
-5. Explain syntax, logic, and conceptual mistakes.
-6. Highlight what the learner did correctly as well as what needs improvement.
-7. Use connected study notes as the primary source when relevant.
-8. Never pretend unsupported information came from the notes.
-9. Stay focused on Python learning.
-10. Avoid irreversible external actions without explicit confirmation.
-
-This design makes the agent closer to an interactive tutor than a conventional answer bot.
-
----
-
-## Example Usage
-
-### Concept explanation
-
-**Learner**
-
-> What is the difference between a list and a tuple?
-
-**Study Coach behaviour**
-
-The agent explains that lists are mutable while tuples are immutable, shows their `[]` and `()` syntax, gives small examples, and may finish with a conceptual check question.
-
-### Practice-first coaching
-
-**Learner**
-
-> Write a simple function that adds two numbers.
-
-**Study Coach behaviour**
-
-Rather than immediately completing the exercise for the learner, the coach can explain `def`, parameters, and the goal of the function before asking the learner to attempt the implementation.
-
-### Code review
-
-A learner can submit Python code and ask why it is not working. The Study Coach is instructed to identify syntax, logic, or conceptual problems and explain the reason behind the error rather than only replacing the code.
-
----
-
-# V2 Evaluation
-
-The final agent was tested using a **10-question Python Foundations evaluation dataset**.
-
-Each test row contained:
+The final configuration maps:
 
 ```text
-input
-output
-expected_output
+Expected Answer → expected_output
+Actual Answer   → AI Agent output
 ```
 
-Where:
+This ensures that the evaluator compares the generated response against the intended reference response rather than comparing two generated values.
 
-- `input` is the benchmark question;
-- `output` is the response generated by the Study Coach;
-- `expected_output` is the reference response used for comparison.
+---
 
-The evaluation workflow feeds each dataset input through the same AI Agent and writes the generated response back as the workflow output. A separate metrics stage then compares the generated answer against the reference answer.
-
-### Final Result
+## Final V2 Result
 
 | Metric | Result |
-|---|---:|
-| Test cases | 10 |
-| Evaluation method | AI-based Correctness |
-| Scale | 1–5 |
+| --- | ---: |
+| Test cases | **10** |
+| Metric | **Correctness (AI-based)** |
+| Scale | **1–5** |
 | **Average Correctness** | **4.40 / 5.00** |
 
-The final corrected evaluation run achieved an average **Correctness score of 4.40/5.00**.
+The final corrected evaluation run achieved an average **4.40 / 5.00** correctness score.
 
-The evaluator uses the dataset's `expected_output` as the expected answer and the Study Coach's generated `output` as the actual answer.
-
-### What the Evaluation Showed
-
-The benchmark indicates strong alignment between the agent's explanations and the reference answers across foundational Python concepts.
-
-The evaluation also highlights an important characteristic of the system: **reference-answer similarity and tutoring quality are not always identical goals**.
-
-For example, when directly asked to write a function, the Study Coach may intentionally guide the learner toward attempting the solution rather than immediately returning the complete implementation. That behaviour follows the tutoring design but can differ from a reference answer that contains the final code.
-
-This is a deliberate trade-off between maximizing benchmark similarity and encouraging active learning.
+This result was recorded after correcting the evaluation mapping so that the benchmark's `expected_output` was used as the expected answer and the AI Agent's generated `output` was used as the actual answer.
 
 ---
 
-## Design Decision: Teaching Before Answering
+## What the Evaluation Revealed
 
-One of the most important design decisions was to make the agent **practice-first rather than answer-first**.
+The agent performed strongly across foundational Python questions, but the evaluation also exposed an important trade-off.
 
-A normal chatbot can immediately return a finished solution. For a learning agent, that behaviour can reduce the learner's opportunity to reason through the problem.
+A reference answer may expect the complete solution immediately.
 
-The Study Coach therefore prefers hints, explanations, and learner attempts before complete solutions when appropriate.
+The Study Coach, however, is deliberately instructed to sometimes **teach first and let the learner attempt the solution**.
 
-This decision makes the interaction more educational, but it can also lower strict reference-answer evaluation scores when a benchmark expects an immediate final answer.
+For example, when asked to write a function, the coach may explain `def` and parameters and ask the learner to attempt the implementation instead of immediately returning the finished function.
 
----
-
-## Limitations
-
-The current version has several intentional and technical limitations.
-
-**In-memory vector storage.** The project uses n8n's Simple Vector Store. It is appropriate for this prototype, but a persistent vector database would be more suitable for a production system.
-
-**Narrow subject scope.** The agent is designed specifically for Python Foundations. Its prompts and knowledge source are not intended to provide comprehensive tutoring across every programming language or advanced computer-science topic.
-
-**Retrieval depends on the available notes.** The quality and coverage of note-grounded responses depend on what is present in the connected study material.
-
-**General-knowledge fallback.** When the notes do not contain relevant material, the agent can use general Python knowledge. Although the prompt explicitly prevents it from falsely attributing that information to the notes, the response is no longer grounded in the personal knowledge base.
-
-**Practice-first responses can differ from reference answers.** The agent may deliberately avoid immediately giving a full solution when the learning objective is better served by allowing the learner to attempt it first.
-
-**LLM-based evaluation is not a deterministic correctness proof.** The V2 Correctness metric is generated by an AI evaluator. It is useful for systematic comparison, but scores can still depend on the evaluator model and rubric.
+That behaviour may differ from a strict reference answer even though it is consistent with the tutoring objective.
 
 ---
 
-## Setup
-
-The repository contains exported n8n workflow files. Credentials are not bundled as usable secrets, so anyone reproducing the project must connect their own accounts and API credentials.
-
-### Prerequisites
-
-You will need:
-
-- an n8n workspace or self-hosted n8n instance;
-- access to a Google Gemini model supported by your n8n installation;
-- OpenAI credentials for embeddings;
-- a Google Drive account;
-- a Markdown or supported document containing your Python study notes.
-
-The evaluation workflow additionally requires an LLM connection for the AI-based correctness evaluator.
-
-### 1. Clone the repository
-
-```bash
-git clone <YOUR-REPOSITORY-URL>
-cd python-study-coach
-```
-
-Alternatively, download the repository as a ZIP file.
-
-### 2. Import the main workflow
-
-In n8n:
-
-1. create or open a project;
-2. choose the option to import a workflow from a file;
-3. import:
+# Project Structure
 
 ```text
-workflow/python-study-coach.json
-```
-
-### 3. Configure the Gemini Chat Model
-
-Open the **Google Gemini Chat Model** node and connect your own Gemini credentials.
-
-If the exact model used in the exported workflow is unavailable in your n8n environment, select an available compatible Gemini chat model and test the workflow before continuing.
-
-### 4. Configure OpenAI Embeddings
-
-Open the **Embeddings OpenAI** node and connect your own OpenAI credentials.
-
-The embeddings node must remain connected to both the indexing and retrieval sides of the vector-store setup.
-
-### 5. Connect Google Drive
-
-Open the **Download file** node and connect your own Google Drive account.
-
-Select the document that contains the study material you want the agent to use.
-
-The original project uses a Markdown file of Python study notes. A reproducing user should select their own file rather than relying on the original private Drive connection.
-
-### 6. Verify the indexing pipeline
-
-Confirm the following path is connected:
-
-```text
-Google Drive
-    ↓
-Simple Vector Store — Insert
-    ↑
-Default Data Loader
-    ↑
-OpenAI Embeddings
-```
-
-The exact visual arrangement can differ; the important part is that the downloaded study material is loaded, embedded, and inserted into the vector store.
-
-### 7. Verify retrieval
-
-The retrieval Simple Vector Store should be configured as a tool for the AI Agent and use the same vector-store memory key as the insertion side.
-
-Its tool description should clearly tell the agent that it retrieves the connected Python study notes.
-
-### 8. Test the agent
-
-Open the n8n chat interface and try questions such as:
-
-```text
-What is a variable in Python?
-```
-
-```text
-Explain a for loop with an example.
-```
-
-```text
-Give me a practice question about dictionaries.
-```
-
-Also test a question that requires the connected study material to confirm that retrieval is working.
-
----
-
-## Reproducing the Evaluation
-
-The repository also contains:
-
-```text
-workflow/python-study-coach-evaluation.json
-```
-
-Import this workflow into n8n separately if you want to reproduce the evaluation configuration.
-
-Create an evaluation Data Table with the following fields:
-
-```text
-input
-output
-expected_output
-```
-
-Add benchmark questions to `input` and reference answers to `expected_output`.
-
-The evaluation flow should use:
-
-```text
-When fetching a dataset row
-        ↓
-AI Agent
-        ↓
-Evaluation — Set Outputs
-        ↓
-Evaluation — Set Metrics
-```
-
-Configure the mappings so that:
-
-```text
-Set Outputs
-Name:  output
-Value: generated AI Agent output
-```
-
-and:
-
-```text
-Correctness — Expected Answer:
-expected_output from the evaluation dataset
-
-Correctness — Actual Answer:
-output generated by the AI Agent
-```
-
-Connect an LLM to the metrics node for the AI-based Correctness evaluation, then run the test from n8n's evaluation interface.
-
----
-
-## Repository Structure
-
-```text
-python-study-coach/
+Python-Study-Coach/
 │
-├── README.md
+├── workflow/
+│   ├── python-study-coach.json
+│   └── python-study-coach-evaluation.json
 │
-└── workflow/
-    ├── python-study-coach.json
-    └── python-study-coach-evaluation.json
+└── README.md
 ```
 
-`python-study-coach.json` contains the primary interactive Study Coach workflow.
+### `python-study-coach.json`
 
-`python-study-coach-evaluation.json` contains the dataset-driven V2 evaluation configuration and AI-based correctness metric.
+The main interactive RAG Study Coach workflow.
 
----
+### `python-study-coach-evaluation.json`
 
-## Security & Credentials
-
-No API keys should be committed to this repository.
-
-The exported n8n workflows may contain credential references or resource identifiers from the development environment, but a new user must configure their own credentials after importing the workflow.
-
-Before committing future workflow exports, always verify that no API keys, access tokens, private documents, or other secrets have been included.
+The evaluation-enabled workflow containing the dataset trigger, output mapping, and AI-based Correctness metric.
 
 ---
 
-## Future Improvements
+# Limitations
 
-Potential V2+ improvements include:
+This project has several important limitations.
 
-- replace the in-memory vector store with persistent vector storage;
-- expand the evaluation dataset beyond foundational definition questions;
-- add tests for debugging, code review, and multi-turn tutoring;
-- evaluate retrieval quality separately from answer correctness;
-- introduce additional metrics for teaching quality and hint usefulness;
-- support learner progress tracking;
-- adapt difficulty based on demonstrated performance;
-- expand the knowledge base while preserving clear source attribution.
+## 1. In-Memory Vector Storage
+
+The current implementation uses n8n's Simple Vector Store.
+
+This is suitable for a prototype, but a persistent vector database would be more appropriate for a production system or a larger knowledge base.
+
+## 2. Limited Learning Scope
+
+The agent is intentionally designed around **Python Foundations**.
+
+It has not been evaluated as a general-purpose programming tutor or an advanced Python assistant.
+
+## 3. Retrieval Depends on the Study Notes
+
+The quality and coverage of note-grounded answers depend on the information contained in the connected study material.
+
+If relevant information is missing, the agent may use general Python knowledge instead.
+
+## 4. General-Knowledge Fallback Is Not Note-Grounded
+
+When the agent falls back to general Python knowledge, the answer is no longer grounded in the personal knowledge base.
+
+The system prompt therefore explicitly prevents the agent from claiming that unsupported information came from the notes.
+
+## 5. Tutoring Behaviour Can Differ From Reference Answers
+
+The agent's practice-first behaviour may intentionally avoid immediately giving a full solution.
+
+This can create differences between a pedagogically useful response and a benchmark's expected answer.
+
+## 6. AI-Based Evaluation Is Not Ground Truth
+
+The V2 Correctness metric uses an LLM judge.
+
+It provides a systematic evaluation signal, but the score can still depend on the evaluator model, rubric, and generated responses.
 
 ---
 
-## Project Status
+# Key Design Decision
 
-**Current version:** Working prototype with RAG retrieval and evaluation pipeline.
+A major design decision was to make the agent **teaching-first rather than answer-first**.
 
-The core Study Coach can run interactively, retrieve from connected Python study notes, and be tested through a dataset-driven evaluation workflow.
+The easiest version of a Python chatbot would simply return the requested code.
+
+That was deliberately avoided.
+
+For practice-oriented requests, the Study Coach can explain the relevant concept, provide a hint, and allow the learner to attempt the problem before revealing the complete solution.
+
+This keeps the learner active in the problem-solving process rather than turning the agent into an automatic answer generator.
 
 ---
 
-## Author
+# Guardrails
 
-**Yumna Kashif**
+The workflow includes several behavioural guardrails.
 
-Built as an AI agent project focused on practical workflow orchestration, retrieval-augmented generation, evaluation, and human-centered learning design.
+The agent is instructed to:
+
+* stay focused on Python learning;
+* avoid unnecessarily advanced explanations;
+* distinguish between retrieved study material and general knowledge;
+* never falsely attribute unsupported information to the learner's notes;
+* avoid irreversible actions on files or external services without explicit confirmation.
+
+These guardrails are implemented through the agent's system instructions rather than through a separate moderation layer.
+
+---
+
+# Security & Reproducibility
+
+API keys and access tokens should **never be committed to this repository**.
+
+The exported n8n JSON files may contain references to credential names, workflow resources, or development-environment identifiers, but another user must connect their own accounts after importing the workflow.
+
+The Google Drive document used during development is also not intended to act as a public credential or shared private knowledge source.
+
+Before publishing future workflow exports, the files should always be checked for exposed secrets.
+
+---
+
+# Future Improvements
+
+Future versions could:
+
+* replace the in-memory vector store with persistent storage;
+* expand the evaluation benchmark beyond 10 questions;
+* test debugging and code-review behaviour separately;
+* add retrieval-specific evaluation;
+* measure teaching quality separately from answer correctness;
+* introduce learner progress tracking;
+* adapt question difficulty based on performance;
+* support a larger structured Python knowledge base;
+* evaluate multi-turn tutoring conversations.
+
+---
+
+# AI Transparency
+
+AI tools were used during the project for:
+
+* workflow development support;
+* debugging;
+* evaluation setup;
+* documentation;
+* iteration.
+
+The final workflow configuration, evaluation mappings, testing decisions, limitations, and project presentation were reviewed during development rather than treating generated suggestions as automatically correct.
+
+---
+
+# Repository
+
+This repository contains the exported workflows and documentation for the Python Study Coach.
+
+The project demonstrates an end-to-end agent workflow:
+
+```text
+Learning Problem
+      ↓
+Agent Behaviour Design
+      ↓
+Knowledge Connection
+      ↓
+RAG Retrieval
+      ↓
+Interactive Tutoring
+      ↓
+Evaluation Dataset
+      ↓
+AI-Based Correctness Evaluation
+      ↓
+Documented Agent
+```
+
+---
+
+# Acknowledgments
+
+This project was completed as part of the **FlyRank AI Fluency Track**.
+
+The Python Study Coach was developed as a practical AI agent project, bringing together workflow orchestration, retrieval-augmented generation (RAG), external knowledge integration, guardrails, and evaluation in a working n8n system.
+
+The project reflects the learning and iteration completed throughout the track, from defining the agent's purpose and connecting a real knowledge source to testing its behaviour and building a V2 evaluation workflow.
+
+Thank you to **FlyRank** and the AI Fluency program for the learning framework, resources, and project structure that supported the development of this agent.
+
+The final workflow design, implementation decisions, testing, evaluation, limitations, and documentation represent my work completed during the track.
