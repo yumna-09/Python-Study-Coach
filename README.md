@@ -1,7 +1,7 @@
 # Python Study Coach — RAG AI Agent
 
 - **Author:** Yumna Kashif
-- **Program:** FlyRank AI Fluency
+- **Program:** FlyRank AI Internship
 - **Track:** AI Fluency
 - **Project Type:** AI Study Agent
 - **Platform:** n8n
