@@ -1,0 +1,287 @@
+﻿input,output,expected_output
+What is a variable in Python?,"Hello Yumna! Great to have you here. Let's talk about **variables** in Python. 
+
+Think of a variable as a **labeled box** or a **container** where you can store data or information. 
+
+For example, imagine you have a box and you put the number `5` inside it. You attach a label to that box called `apples`. In Python, we write that like this:
+
+```python
+apples = 5
+```
+
+Here:
+- `apples` is the **variable name** (the label on the box).
+- `=` is the **assignment operator** (how we put things into the box).
+- `5` is the **value** stored inside the box.
+
+Once you store something in a variable, you can use its name anywhere in your code to get that value back:
+
+```python
+print(apples)  # This will output: 5
+```
+
+Does that make sense? Would you like to try creating a variable of your own, or do you have any questions about it?","A variable is used to store a value or data in computer memory (e.g., name = ""Yumna"")."
+What is the difference between a list and a tuple?,"Great question, Yumna! This is one of the most common questions when learning Python.
+
+Here are the two main differences between a **list** and a **tuple**:
+
+1. **Mutability (Can we change them?):**
+   * **Lists** are *mutable*, meaning you can change, add, or remove items *after* the list is created.
+   * **Tuples** are *immutable*, meaning once you create a tuple, you **cannot** change, add, or remove any items.
+
+2. **Syntax (How do we write them?):**
+   * **Lists** use square brackets `[]`. Example: `my_list = [1, 2, 3]`
+   * **Tuples** use parentheses `()`. Example: `my_tuple = (1, 2, 3)`
+
+---
+
+### A quick example to show the difference:
+
+**Lists (Changeable):**
+```python
+fruits = [""apple"", ""banana"", ""cherry""]
+fruits[0] = ""orange""  # This is allowed!
+print(fruits)  # Output: ['orange', 'banana', 'cherry']
+```
+
+**Tuples (Not changeable):**
+```python
+colors = (""red"", ""green"", ""blue"")
+colors[0] = ""yellow""  # This will give you a TypeError!
+```
+
+***
+
+**Quick check for you:** When do you think you would want to use a *tuple* instead of a *list* in a real program? (Hint: Think about data that shouldn't change accidentally, like days of the week or coordinates!)","A list stores multiple values, uses square brackets, and can be modified (fruits = [""apple"", ""banana""]). A tuple is immutable and cannot be changed after creation."
+Explain a for loop with an example.,"Hello Yumna! I'd love to help you understand `for` loops today. 
+
+Think of a `for` loop as a way to repeat a task automatically. Imagine you have a list of items—like a grocery list or your favorite songs—and you want to look at or do something with each item one by one without writing the same code over and over again.
+
+Here is a simple, beginner-friendly example:
+
+```python
+fruits = [""apple"", ""banana"", ""cherry""]
+
+for fruit in fruits:
+    print(fruit)
+```
+
+### How it works:
+1. **`fruits = [""apple"", ""banana"", ""cherry""]`**: This creates a list of three fruits.
+2. **`for fruit in fruits:`**: This tells Python: ""Go through the `fruits` list one item at a time. For each item you visit, temporarily call it `fruit`.""
+3. **`print(fruit)`**: This is the action performed on each item. 
+
+### What the output looks like:
+```text
+apple
+banana
+cherry
+```
+
+---
+
+Does this make sense? Would you like to try writing a small `for` loop yourself, or do you have any questions about how it works?","A for loop repeats code over a sequence or range (e.g., for i in range(1, 6): print(i))."
+What is a dictionary in Python?,"Hello Yumna! Great to see you studying Python today. 
+
+Let's talk about **dictionaries**! 
+
+Think of a Python dictionary just like a real-world dictionary:
+* In a real dictionary, you look up a **word** (the key) to find its **definition** (the value).
+* In Python, a **dictionary** is a collection of **key-value pairs**. It lets you store data so that you can quickly look up a value using its unique key.
+
+### Here is a simple example:
+
+```python
+# Creating a dictionary about a student named Yumna
+student = {
+    ""name"": ""Yumna"",
+    ""age"": 20,
+    ""course"": ""Python""
+}
+
+# Accessing values using their keys
+print(student[""name""])  # Output: Yumna
+print(student[""course""])  # Output: Python
+```
+
+### Key things to remember:
+1. **Curly braces `{}`** are used to create a dictionary.
+2. Each key is separated from its value by a colon (`:`).
+3. Pairs are separated by commas (`,`).
+4. **Keys must be unique** (you can't have two `""name""` keys), but values can be anything and can be repeated.
+
+Would you like to try a quick practice question to test your understanding, or do you have any questions about how this works?","A dictionary stores data in key-value pairs using curly braces (e.g., student = {""name"": ""Yumna"", ""age"": 20})."
+How does an if-else statement work?,"Hello Yumna! Great question. 
+
+Think of an **`if-else` statement** like a decision-making machine in your everyday life. 
+
+For example:
+* **If** it is raining outside, **else** (otherwise) you wear a raincoat.
+
+In Python, we use `if-else` when we want our code to make a choice based on whether something is `True` or `False` (this is called a **condition**).
+
+Here is what it looks like in Python:
+
+```python
+temperature = 25
+
+if temperature > 30:
+    print(""It's a hot day!"")
+else:
+    print(""The weather is nice!"")
+```
+
+### How it works step-by-step:
+1. **`if`**: Python checks the condition right next to it (`temperature > 30`).
+2. If that condition is **`True`**, Python runs the code indented right underneath the `if` and skips the `else` block entirely.
+3. If that condition is **`False`**, Python jumps straight to the **`else`** block and runs the code indented underneath it instead.
+
+*(Note: Don't forget the colons `:` at the end of the `if` and `else` lines, and make sure your code underneath is indented!)*
+
+Would you like to try writing a quick `if-else` statement yourself, or do you have any questions about this example?","Conditional statements make decisions; if runs code when a condition is True, otherwise else executes."
+What is the purpose of the range() function?,"Hello Yumna! Great question. 
+
+The purpose of the `range()` function in Python is to **generate a sequence of numbers**. 
+
+It is most commonly used in `for` loops when you want to repeat an action a specific number of times. 
+
+Here is a quick, simple example:
+
+```python
+for i in range(5):
+    print(i)
+```
+
+**Output:**
+```text
+0
+1
+2
+3
+4
+```
+
+Notice a couple of things about how `range()` works:
+1. It starts at `0` by default.
+2. It stops *before* the number you give it (so `range(5)` stops at `4`).
+
+Would you like to try a quick practice question with `range()`, or would you like to see how we can give it a starting number as well?","range() generates a sequence of numbers, starting from the start value and stopping before the ending number."
+Explain string slicing in Python.,"Hello Yumna! Let's talk about **string slicing** in Python. 
+
+Think of a string as a row of lockers, where each letter or character sits in its own numbered locker (we call this an **index**). 
+
+**String slicing** is just a way to grab a specific *portion* (or ""slice"") of a string instead of the whole thing.
+
+### The Basic Syntax
+The syntax for slicing looks like this:
+```python
+string_name[start : end]
+```
+- **`start`**: The index where you want the slice to begin (this index *is* included).
+- **`end`**: The index where you want the slice to stop (this index is *not* included—it stops just before it).
+
+---
+
+### A Quick Example
+Let's take the word `""PYTHON""`:
+- `P` is at index `0`
+- `Y` is at index `1`
+- `T` is at index `2`
+- `H` is at index `3`
+- `O` is at index `4`
+- `N` is at index `5`
+
+If we want to grab just the word `""TYT""`? No, let's grab `""THO""` (indices 2, 3, and 4):
+
+```python
+word = ""PYTHON""
+slice_example = word[2:5]
+print(slice_example)  # Output: THO
+```
+*Notice that we put `5` as the end index, even though `O` is at index 4. That's because the `end` index is always exclusive (it stops right before 5).*
+
+---
+
+### Handy Shortcuts
+Python lets you leave out parts of the brackets if you want:
+1. **Leave out the `start` index:** Python assumes you want to start from the very beginning (`0`).
+   ```python
+   print(word[:3])  # Output: PYT (from index 0 up to 3)
+   ```
+2. **Leave out the `end` index:** Python assumes you want to go all the way to the end of the string.
+   ```python
+   print(word[3:])  # Output: HON (from index 3 to the end)
+   ```
+
+---
+
+Would you like to try a quick practice question to test this out, Yumna? Let me know!",String slicing accesses specific parts or characters of a string using indexes starting from 0.
+What is a while loop?,"Hey Yumna! Great question. 
+
+Think of a **`while` loop** as a repetition tool that keeps running a block of code **as long as** a specific condition remains true. 
+
+Imagine you are playing a video game, and the rule is: *""Keep playing **while** your lives are greater than 0.""* As long as you have lives, the game goes on. But the moment your lives hit 0, the loop stops.
+
+Here is a super simple Python example:
+
+```python
+count = 1
+
+while count <= 3:
+    print(""Counting:"", count)
+    count = count + 1  # This is important! It changes the condition so the loop eventually stops.
+
+print(""Loop finished!"")
+```
+
+### How it works:
+1. `count` starts at `1`.
+2. The `while` checks: *Is `count <= 3`?* Yes (`1` is less than or equal to `3`).
+3. It runs the code inside: prints `Counting: 1`, and then increases `count` by `1` (so `count` is now `2`).
+4. It repeats this until `count` becomes `4`. Then the condition `count <= 3` becomes `false`, and the loop stops!
+
+⚠️ **One important rule with `while` loops:** You must always make sure your condition eventually becomes false. If it *never* becomes false, your program will get stuck in an **infinite loop** and run forever!
+
+Would you like to try writing a quick `while` loop yourself, or do you have any questions about this example?",A while loop repeats execution as long as its condition remains True.
+Write a simple function that adds two numbers.,"Hello Yumna! 👋 
+
+Let's write a simple function in Python that adds two numbers together. 
+
+In Python, we use the `def` keyword to define a function, give it a name, and tell it what inputs (called **parameters**) it needs.
+
+Here is a quick example of how a function looks:
+
+```python
+def greet(name):
+    return f""Hello, {name}!""
+```
+
+Now, how would you write a function named `add_numbers` that takes two numbers (let's call them `a` and `b`) and returns their sum? 
+
+Give it a try, and paste your code here! Don't worry if you're not sure—just take your best guess, and we'll figure it out together.","A reusable code block using def that returns the sum of two numbers: def add(a, b): return a + b."
+What is the difference between = and == in Python?,"Hello Yumna! That is a classic and very important question when learning Python. 
+
+Here is the quick breakdown:
+
+1. **`=` (Assignment Operator):**
+   * **What it does:** It assigns a value to a variable.
+   * **Example:** `x = 5` means ""store the number 5 inside the variable `x`.""
+
+2. **`==` (Comparison/Equality Operator):**
+   * **What it does:** It checks if two values are equal. It asks a question: *""Are these two things the same?""* It will give you a Boolean answer: either `True` or `False`.
+   * **Example:** `x == 5` means ""Is `x` equal to 5?"" If `x` holds 5, Python says `True`.
+
+---
+
+### Let's test your understanding! 🧠
+
+Look at this little piece of code:
+
+```python
+a = 10
+b = 20
+
+print(a == b)
+```
+
+Without running it, what do you think this code will print out, and why? Give it your best shot!","= is an assignment operator used to assign a value to a variable, while == is a comparison operator used to check if two values are equal."
