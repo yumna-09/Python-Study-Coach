@@ -17,7 +17,7 @@
 * 🎥 **[Watch Demo](YOUR-YOUTUBE-LINK)**
 * ⚙️ **[Main Workflow](workflow/python-study-coach.json)**
 * 🧪 **[Evaluation Workflow](workflow/python-study-coach-evaluation.json)**
-* 📊 **[Evaluation Dataset](evaluation/python-evaluation-dataset.csv)**
+* 📊 **[Evaluation Dataset](evaluation/Python-Evaluation-Dataset.csv)**
 ---
 
 ## Overview
