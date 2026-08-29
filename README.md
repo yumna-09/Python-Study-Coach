@@ -14,10 +14,10 @@
 ## 🔗 Project Links
 
 * 💻 **[GitHub Repository](https://github.com/yumna-09/Python-Study-Coach)**
-* 🎥 **[Watch Demo](YOUR-YOUTUBE-LINK)**
+* 🎥 **[Watch Demo](https://youtu.be/nzqeNDFhunc)**
 * ⚙️ **[Main Workflow](workflow/python-study-coach.json)**
 * 🧪 **[Evaluation Workflow](workflow/python-study-coach-evaluation.json)**
-* 📊 **[Evaluation Dataset](evaluation/Python-Evaluation-Dataset.csv)**
+* 📊 **[Evaluation Dataset](evaluation/Python%20Evaluation%20Dataset.csv)**
 ---
 
 ## Overview
@@ -445,7 +445,7 @@ The Study Coach is instructed to identify whether the problem is related to synt
 
 A separate evaluation workflow was created to test the final Study Coach against a Python Foundations benchmark.
 
-📊 **[View the Evaluation Dataset](evaluation/python-evaluation-dataset.csv)**
+📊 **[View the Evaluation Dataset](evaluation/Python%20Evaluation%20Dataset.csv)**
 
 The benchmark contains **10 test cases**.
 
@@ -559,7 +559,7 @@ expected_output
 The benchmark used in this project is available at:
 
 ```text
-evaluation/python-evaluation-dataset.csv
+evaluation/Python%20Evaluation%20Dataset.csv
 ```
 
 3. Configure the evaluation dataset trigger to use the imported Data Table.
@@ -597,7 +597,7 @@ Python-Study-Coach/
 │   └── python-study-coach-evaluation.json
 │
 ├── evaluation/
-│   └── python-evaluation-dataset.csv
+│   └── Python Evaluation Dataset.csv
 │
 ├── assets/
 │   ├── python-study-coach-workflow.png
@@ -615,7 +615,7 @@ The main interactive RAG Study Coach workflow.
 
 The evaluation-enabled workflow containing the dataset trigger, output mapping, and AI-based Correctness metric.
 
-### `evaluation/python-evaluation-dataset.csv`
+### `evaluation/Python%20Evaluation%20Dataset.csv`
 
 The 10-question Python Foundations benchmark used for the V2 evaluation.
 
